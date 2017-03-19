@@ -1,0 +1,50 @@
+﻿@model OracleMVCTest.Models.SESSION
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>SESSION</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.START_TIME)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.START_TIME)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ACTIVITy.NAME)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ACTIVITy.NAME)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CUSTOMER.NAME)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CUSTOMER.NAME)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ROOM.ROOM_NAME)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ROOM.ROOM_NAME)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.SESSION_CODE }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

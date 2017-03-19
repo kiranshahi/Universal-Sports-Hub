@@ -1,0 +1,436 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="10.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ACTIVITIES">
+          <Key>
+            <PropertyRef Name="ACTIVITY_ID" />
+          </Key>
+          <Property Name="ACTIVITY_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="NAME" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="PERIOD" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CUSTOMERS">
+          <Key>
+            <PropertyRef Name="REF_NO" />
+          </Key>
+          <Property Name="REF_NO" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="NAME" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="ADDRESS" Type="varchar2" MaxLength="40" Nullable="false" />
+          <Property Name="DATE_OF_BIRTH" Type="date" />
+        </EntityType>
+        <EntityType Name="EQUIP_SESS">
+          <Key>
+            <PropertyRef Name="SESSION_CODE" />
+            <PropertyRef Name="EQUIPMENT_ID" />
+          </Key>
+          <Property Name="SESSION_CODE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="EQUIPMENT_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EQUIPMENTS">
+          <Key>
+            <PropertyRef Name="EQUIPMENT_ID" />
+          </Key>
+          <Property Name="EQUIPMENT_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="EQUIPMENT_NAME" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="QUANTITY" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ROOMS">
+          <Key>
+            <PropertyRef Name="ROOM_ID" />
+          </Key>
+          <Property Name="ROOM_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ROOM_NAME" Type="varchar2" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SESSION_STAFF">
+          <Key>
+            <PropertyRef Name="STAFF_ID" />
+            <PropertyRef Name="SESSION_CODE" />
+          </Key>
+          <Property Name="STAFF_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="SESSION_CODE" Type="number" Precision="38" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SESSIONS">
+          <Key>
+            <PropertyRef Name="SESSION_CODE" />
+          </Key>
+          <Property Name="SESSION_CODE" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="START_TIME" Type="date" Nullable="false" />
+          <Property Name="ACTIVITY_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ROOM_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="REF_NO" Type="varchar2" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="STAFFS">
+          <Key>
+            <PropertyRef Name="STAFF_ID" />
+          </Key>
+          <Property Name="STAFF_ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="STAFF_NAME" Type="varchar2" MaxLength="40" Nullable="false" />
+          <Property Name="STAFF_DESIGNATION" Type="varchar2" MaxLength="40" Nullable="false" />
+          <Property Name="STAFF_TYPE" Type="char" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <Association Name="EQUIP_SESS_EQUIPMENTS_FK">
+          <End Role="EQUIPMENTS" Type="Self.EQUIPMENTS" Multiplicity="1" />
+          <End Role="EQUIP_SESS" Type="Self.EQUIP_SESS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EQUIPMENTS">
+              <PropertyRef Name="EQUIPMENT_ID" />
+            </Principal>
+            <Dependent Role="EQUIP_SESS">
+              <PropertyRef Name="EQUIPMENT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EQUIP_SESS_SESSIONS_FK">
+          <End Role="SESSIONS" Type="Self.SESSIONS" Multiplicity="1" />
+          <End Role="EQUIP_SESS" Type="Self.EQUIP_SESS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SESSIONS">
+              <PropertyRef Name="SESSION_CODE" />
+            </Principal>
+            <Dependent Role="EQUIP_SESS">
+              <PropertyRef Name="SESSION_CODE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SESSION_STAFFFK">
+          <End Role="STAFFS" Type="Self.STAFFS" Multiplicity="1" />
+          <End Role="SESSION_STAFF" Type="Self.SESSION_STAFF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="STAFFS">
+              <PropertyRef Name="STAFF_ID" />
+            </Principal>
+            <Dependent Role="SESSION_STAFF">
+              <PropertyRef Name="STAFF_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SESSION_STAFFFK2">
+          <End Role="SESSIONS" Type="Self.SESSIONS" Multiplicity="1" />
+          <End Role="SESSION_STAFF" Type="Self.SESSION_STAFF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SESSIONS">
+              <PropertyRef Name="SESSION_CODE" />
+            </Principal>
+            <Dependent Role="SESSION_STAFF">
+              <PropertyRef Name="SESSION_CODE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SESSIONS_ACTIVITIES_FK">
+          <End Role="ACTIVITIES" Type="Self.ACTIVITIES" Multiplicity="1" />
+          <End Role="SESSIONS" Type="Self.SESSIONS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACTIVITIES">
+              <PropertyRef Name="ACTIVITY_ID" />
+            </Principal>
+            <Dependent Role="SESSIONS">
+              <PropertyRef Name="ACTIVITY_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SESSIONS_CUSTOMERS_FK">
+          <End Role="CUSTOMERS" Type="Self.CUSTOMERS" Multiplicity="1" />
+          <End Role="SESSIONS" Type="Self.SESSIONS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMERS">
+              <PropertyRef Name="REF_NO" />
+            </Principal>
+            <Dependent Role="SESSIONS">
+              <PropertyRef Name="REF_NO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SESSIONS_ROOMS_FK">
+          <End Role="ROOMS" Type="Self.ROOMS" Multiplicity="1" />
+          <End Role="SESSIONS" Type="Self.SESSIONS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROOMS">
+              <PropertyRef Name="ROOM_ID" />
+            </Principal>
+            <Dependent Role="SESSIONS">
+              <PropertyRef Name="ROOM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="ACTIVITIES" EntityType="Self.ACTIVITIES" Schema="KIRAN" store:Type="Tables" />
+          <EntitySet Name="CUSTOMERS" EntityType="Self.CUSTOMERS" Schema="KIRAN" store:Type="Tables" />
+          <EntitySet Name="EQUIP_SESS" EntityType="Self.EQUIP_SESS" Schema="KIRAN" store:Type="Tables" />
+          <EntitySet Name="EQUIPMENTS" EntityType="Self.EQUIPMENTS" Schema="KIRAN" store:Type="Tables" />
+          <EntitySet Name="ROOMS" EntityType="Self.ROOMS" Schema="KIRAN" store:Type="Tables" />
+          <EntitySet Name="SESSION_STAFF" EntityType="Self.SESSION_STAFF" Schema="KIRAN" store:Type="Tables" />
+          <EntitySet Name="SESSIONS" EntityType="Self.SESSIONS" Schema="KIRAN" store:Type="Tables" />
+          <EntitySet Name="STAFFS" EntityType="Self.STAFFS" Schema="KIRAN" store:Type="Tables" />
+          <AssociationSet Name="EQUIP_SESS_EQUIPMENTS_FK" Association="Self.EQUIP_SESS_EQUIPMENTS_FK">
+            <End Role="EQUIPMENTS" EntitySet="EQUIPMENTS" />
+            <End Role="EQUIP_SESS" EntitySet="EQUIP_SESS" />
+          </AssociationSet>
+          <AssociationSet Name="EQUIP_SESS_SESSIONS_FK" Association="Self.EQUIP_SESS_SESSIONS_FK">
+            <End Role="SESSIONS" EntitySet="SESSIONS" />
+            <End Role="EQUIP_SESS" EntitySet="EQUIP_SESS" />
+          </AssociationSet>
+          <AssociationSet Name="SESSION_STAFFFK" Association="Self.SESSION_STAFFFK">
+            <End Role="STAFFS" EntitySet="STAFFS" />
+            <End Role="SESSION_STAFF" EntitySet="SESSION_STAFF" />
+          </AssociationSet>
+          <AssociationSet Name="SESSION_STAFFFK2" Association="Self.SESSION_STAFFFK2">
+            <End Role="SESSIONS" EntitySet="SESSIONS" />
+            <End Role="SESSION_STAFF" EntitySet="SESSION_STAFF" />
+          </AssociationSet>
+          <AssociationSet Name="SESSIONS_ACTIVITIES_FK" Association="Self.SESSIONS_ACTIVITIES_FK">
+            <End Role="ACTIVITIES" EntitySet="ACTIVITIES" />
+            <End Role="SESSIONS" EntitySet="SESSIONS" />
+          </AssociationSet>
+          <AssociationSet Name="SESSIONS_CUSTOMERS_FK" Association="Self.SESSIONS_CUSTOMERS_FK">
+            <End Role="CUSTOMERS" EntitySet="CUSTOMERS" />
+            <End Role="SESSIONS" EntitySet="SESSIONS" />
+          </AssociationSet>
+          <AssociationSet Name="SESSIONS_ROOMS_FK" Association="Self.SESSIONS_ROOMS_FK">
+            <End Role="ROOMS" EntitySet="ROOMS" />
+            <End Role="SESSIONS" EntitySet="SESSIONS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ACTIVITy">
+          <Key>
+            <PropertyRef Name="ACTIVITY_ID" />
+          </Key>
+          <Property Name="ACTIVITY_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PERIOD" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <NavigationProperty Name="SESSIONS" Relationship="Self.SESSIONS_ACTIVITIES_FK" FromRole="ACTIVITIES" ToRole="SESSIONS" />
+        </EntityType>
+        <EntityType Name="CUSTOMER">
+          <Key>
+            <PropertyRef Name="REF_NO" />
+          </Key>
+          <Property Name="REF_NO" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ADDRESS" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DATE_OF_BIRTH" Type="DateTime" />
+          <NavigationProperty Name="SESSIONS" Relationship="Self.SESSIONS_CUSTOMERS_FK" FromRole="CUSTOMERS" ToRole="SESSIONS" />
+        </EntityType>
+        <EntityType Name="EQUIPMENT">
+          <Key>
+            <PropertyRef Name="EQUIPMENT_ID" />
+          </Key>
+          <Property Name="EQUIPMENT_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="EQUIPMENT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="QUANTITY" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <NavigationProperty Name="SESSIONS" Relationship="Self.EQUIP_SESS" FromRole="EQUIPMENTS" ToRole="SESSIONS" />
+        </EntityType>
+        <EntityType Name="ROOM">
+          <Key>
+            <PropertyRef Name="ROOM_ID" />
+          </Key>
+          <Property Name="ROOM_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ROOM_NAME" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="SESSIONS" Relationship="Self.SESSIONS_ROOMS_FK" FromRole="ROOMS" ToRole="SESSIONS" />
+        </EntityType>
+        <EntityType Name="SESSION">
+          <Key>
+            <PropertyRef Name="SESSION_CODE" />
+          </Key>
+          <Property Name="SESSION_CODE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="START_TIME" Type="DateTime" Nullable="false" />
+          <Property Name="ACTIVITY_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ROOM_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="REF_NO" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ACTIVITy" Relationship="Self.SESSIONS_ACTIVITIES_FK" FromRole="SESSIONS" ToRole="ACTIVITIES" />
+          <NavigationProperty Name="CUSTOMER" Relationship="Self.SESSIONS_CUSTOMERS_FK" FromRole="SESSIONS" ToRole="CUSTOMERS" />
+          <NavigationProperty Name="ROOM" Relationship="Self.SESSIONS_ROOMS_FK" FromRole="SESSIONS" ToRole="ROOMS" />
+          <NavigationProperty Name="EQUIPMENTS" Relationship="Self.EQUIP_SESS" FromRole="SESSIONS" ToRole="EQUIPMENTS" />
+          <NavigationProperty Name="STAFFS" Relationship="Self.SESSION_STAFF" FromRole="SESSIONS" ToRole="STAFFS" />
+        </EntityType>
+        <EntityType Name="STAFF">
+          <Key>
+            <PropertyRef Name="STAFF_ID" />
+          </Key>
+          <Property Name="STAFF_ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="STAFF_NAME" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="STAFF_DESIGNATION" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="STAFF_TYPE" Type="String" MaxLength="20" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="SESSIONS" Relationship="Self.SESSION_STAFF" FromRole="STAFFS" ToRole="SESSIONS" />
+        </EntityType>
+        <Association Name="SESSIONS_ACTIVITIES_FK">
+          <End Role="ACTIVITIES" Type="Self.ACTIVITy" Multiplicity="1" />
+          <End Role="SESSIONS" Type="Self.SESSION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACTIVITIES">
+              <PropertyRef Name="ACTIVITY_ID" />
+            </Principal>
+            <Dependent Role="SESSIONS">
+              <PropertyRef Name="ACTIVITY_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SESSIONS_CUSTOMERS_FK">
+          <End Role="CUSTOMERS" Type="Self.CUSTOMER" Multiplicity="1" />
+          <End Role="SESSIONS" Type="Self.SESSION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMERS">
+              <PropertyRef Name="REF_NO" />
+            </Principal>
+            <Dependent Role="SESSIONS">
+              <PropertyRef Name="REF_NO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SESSIONS_ROOMS_FK">
+          <End Role="ROOMS" Type="Self.ROOM" Multiplicity="1" />
+          <End Role="SESSIONS" Type="Self.SESSION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROOMS">
+              <PropertyRef Name="ROOM_ID" />
+            </Principal>
+            <Dependent Role="SESSIONS">
+              <PropertyRef Name="ROOM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EQUIP_SESS">
+          <End Role="EQUIPMENTS" Type="Self.EQUIPMENT" Multiplicity="*" />
+          <End Role="SESSIONS" Type="Self.SESSION" Multiplicity="*" />
+        </Association>
+        <Association Name="SESSION_STAFF">
+          <End Role="STAFFS" Type="Self.STAFF" Multiplicity="*" />
+          <End Role="SESSIONS" Type="Self.SESSION" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="Entities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ACTIVITIES" EntityType="Self.ACTIVITy" />
+          <EntitySet Name="CUSTOMERS" EntityType="Self.CUSTOMER" />
+          <EntitySet Name="EQUIPMENTS" EntityType="Self.EQUIPMENT" />
+          <EntitySet Name="ROOMS" EntityType="Self.ROOM" />
+          <EntitySet Name="SESSIONS" EntityType="Self.SESSION" />
+          <EntitySet Name="STAFFS" EntityType="Self.STAFF" />
+          <AssociationSet Name="SESSIONS_ACTIVITIES_FK" Association="Self.SESSIONS_ACTIVITIES_FK">
+            <End Role="ACTIVITIES" EntitySet="ACTIVITIES" />
+            <End Role="SESSIONS" EntitySet="SESSIONS" />
+          </AssociationSet>
+          <AssociationSet Name="SESSIONS_CUSTOMERS_FK" Association="Self.SESSIONS_CUSTOMERS_FK">
+            <End Role="CUSTOMERS" EntitySet="CUSTOMERS" />
+            <End Role="SESSIONS" EntitySet="SESSIONS" />
+          </AssociationSet>
+          <AssociationSet Name="SESSIONS_ROOMS_FK" Association="Self.SESSIONS_ROOMS_FK">
+            <End Role="ROOMS" EntitySet="ROOMS" />
+            <End Role="SESSIONS" EntitySet="SESSIONS" />
+          </AssociationSet>
+          <AssociationSet Name="EQUIP_SESS" Association="Self.EQUIP_SESS">
+            <End Role="EQUIPMENTS" EntitySet="EQUIPMENTS" />
+            <End Role="SESSIONS" EntitySet="SESSIONS" />
+          </AssociationSet>
+          <AssociationSet Name="SESSION_STAFF" Association="Self.SESSION_STAFF">
+            <End Role="STAFFS" EntitySet="STAFFS" />
+            <End Role="SESSIONS" EntitySet="SESSIONS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities2">
+          <EntitySetMapping Name="ACTIVITIES">
+            <EntityTypeMapping TypeName="Model.ACTIVITy">
+              <MappingFragment StoreEntitySet="ACTIVITIES">
+                <ScalarProperty Name="ACTIVITY_ID" ColumnName="ACTIVITY_ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="PERIOD" ColumnName="PERIOD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CUSTOMERS">
+            <EntityTypeMapping TypeName="Model.CUSTOMER">
+              <MappingFragment StoreEntitySet="CUSTOMERS">
+                <ScalarProperty Name="REF_NO" ColumnName="REF_NO" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+                <ScalarProperty Name="DATE_OF_BIRTH" ColumnName="DATE_OF_BIRTH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EQUIPMENTS">
+            <EntityTypeMapping TypeName="Model.EQUIPMENT">
+              <MappingFragment StoreEntitySet="EQUIPMENTS">
+                <ScalarProperty Name="EQUIPMENT_ID" ColumnName="EQUIPMENT_ID" />
+                <ScalarProperty Name="EQUIPMENT_NAME" ColumnName="EQUIPMENT_NAME" />
+                <ScalarProperty Name="QUANTITY" ColumnName="QUANTITY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ROOMS">
+            <EntityTypeMapping TypeName="Model.ROOM">
+              <MappingFragment StoreEntitySet="ROOMS">
+                <ScalarProperty Name="ROOM_ID" ColumnName="ROOM_ID" />
+                <ScalarProperty Name="ROOM_NAME" ColumnName="ROOM_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SESSIONS">
+            <EntityTypeMapping TypeName="Model.SESSION">
+              <MappingFragment StoreEntitySet="SESSIONS">
+                <ScalarProperty Name="SESSION_CODE" ColumnName="SESSION_CODE" />
+                <ScalarProperty Name="START_TIME" ColumnName="START_TIME" />
+                <ScalarProperty Name="ACTIVITY_ID" ColumnName="ACTIVITY_ID" />
+                <ScalarProperty Name="ROOM_ID" ColumnName="ROOM_ID" />
+                <ScalarProperty Name="REF_NO" ColumnName="REF_NO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="STAFFS">
+            <EntityTypeMapping TypeName="Model.STAFF">
+              <MappingFragment StoreEntitySet="STAFFS">
+                <ScalarProperty Name="STAFF_ID" ColumnName="STAFF_ID" />
+                <ScalarProperty Name="STAFF_NAME" ColumnName="STAFF_NAME" />
+                <ScalarProperty Name="STAFF_DESIGNATION" ColumnName="STAFF_DESIGNATION" />
+                <ScalarProperty Name="STAFF_TYPE" ColumnName="STAFF_TYPE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="EQUIP_SESS" TypeName="Model.EQUIP_SESS" StoreEntitySet="EQUIP_SESS">
+            <EndProperty Name="EQUIPMENTS">
+              <ScalarProperty Name="EQUIPMENT_ID" ColumnName="EQUIPMENT_ID" />
+            </EndProperty>
+            <EndProperty Name="SESSIONS">
+              <ScalarProperty Name="SESSION_CODE" ColumnName="SESSION_CODE" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="SESSION_STAFF" TypeName="Model.SESSION_STAFF" StoreEntitySet="SESSION_STAFF">
+            <EndProperty Name="STAFFS">
+              <ScalarProperty Name="STAFF_ID" ColumnName="STAFF_ID" />
+            </EndProperty>
+            <EndProperty Name="SESSIONS">
+              <ScalarProperty Name="SESSION_CODE" ColumnName="SESSION_CODE" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

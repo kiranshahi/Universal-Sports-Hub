@@ -1,0 +1,42 @@
+﻿@model OracleMVCTest.Models.STAFF
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>STAFF</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.STAFF_NAME)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.STAFF_NAME)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.STAFF_DESIGNATION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.STAFF_DESIGNATION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.STAFF_TYPE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.STAFF_TYPE)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.STAFF_ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
